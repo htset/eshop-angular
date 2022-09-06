@@ -1,0 +1,23 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+.vs
+
+# Node
+eshop-angular/node_modules
+eshop-angular/npm-debug.log
+eshop-angular/yarn-error.log
+
+# Visual Studio Code
+eshop-angular/.vscode/*
+!eshop-angular/.vscode/settings.json
+!eshop-angular/.vscode/tasks.json
+!eshop-angular/.vscode/launch.json
+!eshop-angular/.vscode/extensions.json
+eshop-angular/.history/*
+eshop-angular/.angular
+eshop-angular/obj/*
+
+
+eshop-backend/bin/*
+eshop-backend/obj/*
+
