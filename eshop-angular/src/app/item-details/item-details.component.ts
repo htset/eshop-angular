@@ -22,8 +22,10 @@ export class ItemDetailsComponent implements OnInit {
 
   getItem(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.itemService.getItem(id)
-      .subscribe(item => this.item = item);
+    if (!isNaN(id)) {
+      this.itemService.getItem(id)
+        .subscribe(item => this.item = item);
+    }
   }
 
   addToCart(): void { }

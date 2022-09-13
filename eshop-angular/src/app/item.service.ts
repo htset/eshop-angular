@@ -18,7 +18,7 @@ export class ItemService {
   }
 
   getItem(id: number): Observable<any> {
-    return of(mock_items[id + 1]);
+    return of(mock_items[id - 1]);
   }
 
   constructor() { }
