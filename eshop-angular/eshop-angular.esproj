@@ -10,4 +10,9 @@
     <!-- Folder where production build objects will be placed -->
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\eshop-angular</BuildOutputFolder>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="src\app\components\admin\" />
+    <Folder Include="src\app\components\shared\" />
+    <Folder Include="src\app\models\" />
+  </ItemGroup>
 </Project>
