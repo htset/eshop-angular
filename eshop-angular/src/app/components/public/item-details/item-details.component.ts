@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Item } from 'src/app/models/item';
+import { StoreService } from 'src/app/services/store.service';
 import { ItemService } from '../../../services/item.service';
-import { Item } from '../../../models/item';
 
 @Component({
   selector: 'app-item-details',
@@ -10,11 +11,13 @@ import { Item } from '../../../models/item';
 })
 export class ItemDetailsComponent implements OnInit {
 
-  item:Item = { id: 0, name: "", price: 0, category: "", description: "" };
+  item: Item = { id: 0, name: "", price: 0, category: "", description: "" };
 
   constructor(
     private route: ActivatedRoute,
-    private itemService: ItemService
+    private itemService: ItemService,
+    private storeService: StoreService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -23,12 +26,13 @@ export class ItemDetailsComponent implements OnInit {
 
   getItem(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (!isNaN(id)) {
-      this.itemService.getItem(id)
-        .subscribe(item => this.item = item);
-    }
+    this.itemService.getItem(id)
+      .subscribe(item => this.item = item);
   }
 
-  addToCart(): void { }
-}
+  addToCart(): void {
+    this.storeService.cart.addItem({ item: this.item, quantity: 1 });
+    this.router.navigate(['/cart']);
+  }
 
+}
