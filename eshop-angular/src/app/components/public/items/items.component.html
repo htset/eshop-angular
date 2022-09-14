@@ -1,5 +1,7 @@
 <p>Products</p>
 
+<button (click)="openFilter()">Filters</button>
+
 Page size:
 <select [(ngModel)]="storeService.pageSize" (change)="onPageSizeChange()" id="pageSize">
   <option value="3">3</option>
