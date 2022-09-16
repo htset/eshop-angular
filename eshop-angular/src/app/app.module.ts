@@ -7,9 +7,10 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ItemsComponent } from './components/public/items/items.component';
 import { ItemDetailsComponent } from './components/public/item-details/item-details.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterComponent } from './components/shared/filter/filter.component';
 import { CartComponent } from './components/public/cart/cart.component';
+import { LoginComponent } from './components/public/login/login.component';
 
 @NgModule({
   declarations: [
@@ -17,14 +18,16 @@ import { CartComponent } from './components/public/cart/cart.component';
     ItemsComponent,
     ItemDetailsComponent,
     FilterComponent,
-    CartComponent
+    CartComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     NgbModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
