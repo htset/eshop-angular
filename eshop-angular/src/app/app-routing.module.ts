@@ -18,7 +18,10 @@ const routes: Routes = [
     path: 'admin', component: AdminHomeComponent,
       canActivate: [AuthGuard],
     children: [
-      { path: 'users', component: AdminUsersComponent }
+      {
+        path: 'users', component: AdminUsersComponent,
+        canActivate: [AuthGuard]
+      }
     ]
   },
 ];
