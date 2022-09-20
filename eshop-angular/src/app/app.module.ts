@@ -16,6 +16,8 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { AdminUsersComponent } from './components/admin/admin-users/admin-users.component';
 import { DeliveryAddressComponent } from './components/shared/delivery-address/delivery-address.component';
 import { CheckoutComponent } from './components/public/checkout/checkout.component';
+import { PaymentComponent } from './components/public/payment/payment.component';
+import { SummaryComponent } from './components/public/summary/summary.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { CheckoutComponent } from './components/public/checkout/checkout.compone
     AdminHomeComponent,
     AdminUsersComponent,
     DeliveryAddressComponent,
-    CheckoutComponent
+    CheckoutComponent,
+    PaymentComponent,
+    SummaryComponent
   ],
   imports: [
     BrowserModule,
