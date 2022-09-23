@@ -20,7 +20,7 @@ export class UserService {
   }
 
   getAddressByUserId(userId: number) {
-    return this.http.get<Address[]>(`${environment.apiUrl}/address`);
+    return this.http.get<Address[]>(`${environment.apiUrl}/address/${userId}`);
   }
 
   saveAddress(address: Address) {
@@ -30,4 +30,5 @@ export class UserService {
   deleteAddress(addressId?: number) {
     return this.http.delete<number>(`${environment.apiUrl}/address/${addressId}`);
   }
+
 }

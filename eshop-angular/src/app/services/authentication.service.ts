@@ -32,13 +32,15 @@ export class AuthenticationService {
       { refreshToken })
       .subscribe();
 
+    this.storeService.cart.emptyCart();
     sessionStorage.removeItem('user');
+
     this.storeService.user = null;
   }
 
   refreshToken(token: string, refreshToken: string) {
     return this.http.post<User>(`${environment.apiUrl}/users/refresh`,
-      { token, refreshToken })
+        { token, refreshToken })
       .pipe(
         map(user => {
           sessionStorage.setItem('user', JSON.stringify(user));
@@ -48,4 +50,3 @@ export class AuthenticationService {
       );
   }
 }
-
