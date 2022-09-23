@@ -12,7 +12,7 @@
                   loginForm.controls['username'].errors }" />
           <div *ngIf="submitted && loginForm.controls['username'].errors">
             <div *ngIf="loginForm.controls['username'].errors['required']">
-              Required  
+              Required
             </div>
           </div>
         </div>
@@ -37,6 +37,10 @@
         <div *ngIf="error"
              class="alert alert-danger mt-3 mb-3">{{error}}</div>
       </form>
+    </div>
+    <div class="card-body">
+      <a routerLink="/register">Register</a> -
+      <a routerLink="/forgot_password">Forgot Password</a>
     </div>
   </div>
 </div>

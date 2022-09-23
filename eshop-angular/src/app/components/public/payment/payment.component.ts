@@ -59,7 +59,7 @@ export class PaymentComponent implements OnInit {
       this.orderService.addOrder(order)
         .subscribe((orderResult: Order) => {
           this.storeService.order = orderResult;
-          this.storeService.cart = new Cart();
+          this.storeService.cart.emptyCart();
           this.storeService.deliveryAddress = -1;
 
           this.router.navigate(['/summary']);

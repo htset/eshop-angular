@@ -23,6 +23,11 @@ import { ErrorInterceptor } from './helpers/error-interceptor';
 import { ErrorDialogComponent } from './components/shared/error-dialog/error-dialog.component';
 import { AnalyticsDirective } from './directives/analytics.directive';
 import { LoadingDialogComponent } from './components/shared/loading-dialog/loading-dialog.component';
+import { RegistrationComponent } from './components/public/registration/registration.component';
+import { RegistrationConfirmComponent } from './components/public/registration-confirm/registration-confirm.component';
+import { ForgotPasswordComponent } from './components/public/forgot-password/forgot-password.component';
+import { NewPasswordComponent } from './components/public/new-password/new-password.component';
+import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 
 @NgModule({
   declarations: [
@@ -40,7 +45,11 @@ import { LoadingDialogComponent } from './components/shared/loading-dialog/loadi
     SummaryComponent,
     ErrorDialogComponent,
     AnalyticsDirective,
-    LoadingDialogComponent
+    LoadingDialogComponent,
+    RegistrationComponent,
+    RegistrationConfirmComponent,
+    ForgotPasswordComponent,
+    NewPasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +57,9 @@ import { LoadingDialogComponent } from './components/shared/loading-dialog/loadi
     NgbModule,
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RecaptchaModule,
+    RecaptchaFormsModule
   ],
   providers: [
     {
