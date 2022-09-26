@@ -93,7 +93,7 @@ namespace my_eshop_api.Controllers
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<User?>> GetUser(int id)
         {
             var user = await Context.Users.FindAsync(id);

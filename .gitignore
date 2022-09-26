@@ -20,4 +20,6 @@ eshop-angular/obj/*
 
 eshop-backend/bin/*
 eshop-backend/obj/*
+eshop-backend/wwwroot/images
+
 

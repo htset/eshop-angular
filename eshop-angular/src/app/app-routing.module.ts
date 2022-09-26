@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
+import { AdminItemFormComponent } from './components/admin/admin-item-form/admin-item-form.component';
+import { AdminItemsComponent } from './components/admin/admin-items/admin-items.component';
 import { AdminUsersComponent } from './components/admin/admin-users/admin-users.component';
 import { CartComponent } from './components/public/cart/cart.component';
 import { CheckoutComponent } from './components/public/checkout/checkout.component';
@@ -27,12 +29,29 @@ const routes: Routes = [
   { path: 'register', component: RegistrationComponent },
   { path: 'confirm_registration', component: RegistrationConfirmComponent },
   { path: 'forgot_password', component: ForgotPasswordComponent },
-  { path: 'new_password', component: NewPasswordComponent },  {
+  { path: 'new_password', component: NewPasswordComponent },
+  {
     path: 'admin', component: AdminHomeComponent,
     canActivate: [AuthGuard],
     children: [
       {
-        path: 'users', component: AdminUsersComponent,
+        path: 'users',
+        component: AdminUsersComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'items',
+        component: AdminItemsComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'item/:id',
+        component: AdminItemFormComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'new_item',
+        component: AdminItemFormComponent,
         canActivate: [AuthGuard]
       }
     ]
