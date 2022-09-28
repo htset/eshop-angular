@@ -50,7 +50,6 @@ export class Cart {
   }
 
   updateLocalStorage() {
-    console.log(JSON.stringify(this.cartItems))
     localStorage.setItem('cart', JSON.stringify(this.cartItems));
   }
 }
