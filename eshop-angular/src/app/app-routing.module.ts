@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminHomeComponent } from './components/admin/admin-home/admin-home.component';
 import { AdminItemFormComponent } from './components/admin/admin-item-form/admin-item-form.component';
 import { AdminItemsComponent } from './components/admin/admin-items/admin-items.component';
+import { AdminOrderDetailsComponent } from './components/admin/admin-order-details/admin-order-details.component';
+import { AdminOrdersComponent } from './components/admin/admin-orders/admin-orders.component';
 import { AdminUsersComponent } from './components/admin/admin-users/admin-users.component';
 import { CartComponent } from './components/public/cart/cart.component';
 import { CheckoutComponent } from './components/public/checkout/checkout.component';
@@ -52,6 +54,16 @@ const routes: Routes = [
       {
         path: 'new_item',
         component: AdminItemFormComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'orders',
+        component: AdminOrdersComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'order/:id',
+        component: AdminOrderDetailsComponent,
         canActivate: [AuthGuard]
       }
     ]

@@ -30,6 +30,8 @@ import { NewPasswordComponent } from './components/public/new-password/new-passw
 import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 import { AdminItemsComponent } from './components/admin/admin-items/admin-items.component';
 import { AdminItemFormComponent } from './components/admin/admin-item-form/admin-item-form.component';
+import { AdminOrdersComponent } from './components/admin/admin-orders/admin-orders.component';
+import { AdminOrderDetailsComponent } from './components/admin/admin-order-details/admin-order-details.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,9 @@ import { AdminItemFormComponent } from './components/admin/admin-item-form/admin
     ForgotPasswordComponent,
     NewPasswordComponent,
     AdminItemsComponent,
-    AdminItemFormComponent
+    AdminItemFormComponent,
+    AdminOrdersComponent,
+    AdminOrderDetailsComponent
   ],
   imports: [
     BrowserModule,

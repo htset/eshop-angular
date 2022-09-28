@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: 'https://localhost:7261/api',
+  oDataUrl: 'https://localhost:7261/odata',
   imagesUrl: 'https://localhost:7261/images'
 };
 

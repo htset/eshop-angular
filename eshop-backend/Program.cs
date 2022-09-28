@@ -5,6 +5,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Serilog;
+using Microsoft.AspNetCore.OData;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
+
+static IEdmModel GetEdmModel()
+{
+    var obuilder = new ODataConventionModelBuilder();
+    obuilder.EntitySet<Order>("Orders");
+    obuilder.EnableLowerCamelCase();
+    return obuilder.GetEdmModel();
+}
 
 var allowSpecificOrigins = "angular_eshop_AllowSpecificOrigins";
 
@@ -26,6 +37,15 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddControllers()
+    .AddOData(options => options
+        .AddRouteComponents("odata", GetEdmModel())
+        .Select()
+        .Filter()
+        .OrderBy()
+        .SetMaxTop(50)
+        .Count());
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<EshopContext>(x => x.UseSqlServer(connectionString));
