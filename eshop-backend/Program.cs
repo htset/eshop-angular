@@ -8,6 +8,7 @@ using Serilog;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
+using eshop_backend.Services;
 
 static IEdmModel GetEdmModel()
 {
@@ -32,6 +33,8 @@ Log.Logger = new LoggerConfiguration()
      .CreateLogger();
 
 builder.Host.UseSerilog();
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

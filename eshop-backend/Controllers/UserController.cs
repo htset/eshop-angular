@@ -1,5 +1,6 @@
 ﻿using eshop_backend.Helpers;
 using eshop_backend.Models;
+using eshop_backend.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
@@ -32,30 +33,28 @@ namespace my_eshop_api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly EshopContext Context;
+        private readonly IUserService Service;
         private readonly AppSettings AppSettings;
 
-        public UserController(EshopContext context, 
+        public UserController(IUserService service, 
             IOptions<AppSettings> appSettings)
         {
-            Context = context;
+            Service = service;
             AppSettings = appSettings.Value;
         }
 
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate([FromBody] User formParams)
         {
-            if (formParams == null || formParams.Password == null)
+            if (formParams == null || formParams.Username == null)
                 return BadRequest(new { message = "Log in failed" });
 
-            var user = await Context.Users
-                .SingleOrDefaultAsync(x => x.Username == formParams.Username);
+            var user = await Service.GetUserByUsername(formParams.Username);
 
             if (user == null || user.Password == null)
                 return BadRequest(new { message = "Log in failed" });
 
-            if (!PasswordHasher
-                .VerifyPassword(formParams.Password, user.Password))
+            if (!PasswordHasher.VerifyPassword(formParams.Password, user.Password))
                 return BadRequest(new { message = "Log in failed" });
 
             if (user.Status != "Active")
@@ -66,8 +65,8 @@ namespace my_eshop_api.Controllers
 
             user.Token = CreateToken(user);
             user.RefreshToken = CreateRefreshToken();
-            user.RefreshTokenExpiry = DateTime.Now.AddDays(7);
-            Context.SaveChanges();
+            user.RefreshTokenExpiry = DateTime.Now.AddMinutes(2);
+            Service.UpdateUser(user);
 
             user.Password = null;
 
@@ -78,26 +77,15 @@ namespace my_eshop_api.Controllers
         [HttpGet]
         public async Task<ActionResult<List<User>>> GetAllUsers()
         {
-            return await Context.Users
-                .Select(x => new User()
-                {
-                    Id = x.Id,
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    Username = x.Username,
-                    Password = null,
-                    Role = x.Role,
-                    Email = x.Email
-                })
-                .ToListAsync();
+            return await Service.GetUsers();
         }
 
         [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<User?>> GetUser(int id)
         {
-            var user = await Context.Users.FindAsync(id);
-            if(user != null)
+            var user = await Service.GetUserById(id);
+            if (user != null)
                 user.Password = null;
             return user;
         }
@@ -105,9 +93,7 @@ namespace my_eshop_api.Controllers
         [HttpPost("refresh")]
         public async Task<IActionResult> RefreshToken([FromBody] User data)
         {
-            var user = await Context.Users
-                .SingleOrDefaultAsync(u => (u.RefreshToken == data.RefreshToken)
-                    && (u.Token == data.Token));
+            var user = await Service.GetUserFromTokens(data.Token, data.RefreshToken);
 
             if (user == null || DateTime.Now > user.RefreshTokenExpiry)
                 return BadRequest(new { message = "Invalid token" });
@@ -115,7 +101,7 @@ namespace my_eshop_api.Controllers
             user.Token = CreateToken(user);
             user.RefreshToken = CreateRefreshToken();
             user.RefreshTokenExpiry = DateTime.Now.AddDays(7);
-            Context.SaveChanges();
+            Service.UpdateUser(user);
 
             user.Password = null;
 
@@ -126,8 +112,7 @@ namespace my_eshop_api.Controllers
         [HttpPost("revoke")]
         public async Task<IActionResult> RevokeToken([FromBody] User data)
         {
-            var user = await Context.Users
-                .SingleOrDefaultAsync(u => (u.RefreshToken == data.RefreshToken));
+            var user = await Service.GetUserFromRefreshToken(data.RefreshToken);
 
             if (user == null || DateTime.Now > user.RefreshTokenExpiry)
                 return BadRequest(new { message = "Invalid token" });
@@ -135,7 +120,7 @@ namespace my_eshop_api.Controllers
             user.Token = null;
             user.RefreshToken = null;
             user.RefreshTokenExpiry = null;
-            Context.SaveChanges();
+            Service.UpdateUser(user);
 
             user.Password = null;
 
@@ -146,12 +131,12 @@ namespace my_eshop_api.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<User>> Register([FromBody] User user)
         {
-            if (await Context.Users.AnyAsync(u => u.Username == user.Username))
+            if ((await Service.GetUserByUsername(user.Username)) != null)
             {
                 return BadRequest("Username is already used");
             }
 
-            if (await Context.Users.AnyAsync(u => u.Email == user.Email))
+            if ((await Service.GetUserByEmail(user.Email)) != null)
             {
                 return BadRequest("Email is already used");
             }
@@ -161,8 +146,7 @@ namespace my_eshop_api.Controllers
             user.Status = "Pending";
             user.RegistrationCode = CreateConfirmationToken();
 
-            await Context.Users.AddAsync(user);
-            await Context.SaveChangesAsync();
+            Service.CreateUser(user);
 
             SendConfirmationEmail(user);
 
@@ -173,7 +157,7 @@ namespace my_eshop_api.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<User>> ConfirmRegistration([FromBody] RegistrationCode code)
         {
-            var user = await Context.Users.SingleOrDefaultAsync(u => u.RegistrationCode == code.Code);
+            var user = await Service.GetUserByRegistrationCode(code.Code);
             if (user == null)
             {
                 return BadRequest("Registration code not found");
@@ -189,7 +173,7 @@ namespace my_eshop_api.Controllers
             user.RefreshToken = CreateRefreshToken();
             user.RefreshTokenExpiry = DateTime.Now.AddDays(7);
 
-            await Context.SaveChangesAsync();
+            Service.UpdateUser(user);
 
             user.Password = null;
 
@@ -200,7 +184,7 @@ namespace my_eshop_api.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<User>> ResetPassword([FromBody] ResetEmail resetEmail)
         {
-            var user = await Context.Users.SingleOrDefaultAsync(u => u.Email == resetEmail.Email);
+            var user = await Service.GetUserByEmail(resetEmail.Email);
             if (user == null)
             {
                 return BadRequest("Email not found");
@@ -210,7 +194,7 @@ namespace my_eshop_api.Controllers
             user.Password = null;
             user.RegistrationCode = CreateConfirmationToken();
 
-            await Context.SaveChangesAsync();
+            Service.UpdateUser(user);
 
             SendPasswordResetEmail(user);
 
@@ -221,7 +205,7 @@ namespace my_eshop_api.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<User>> ChangePassword([FromBody] User inputUser)
         {
-            var user = await Context.Users.SingleOrDefaultAsync(u => u.RegistrationCode == inputUser.RegistrationCode);
+            var user = await Service.GetUserByRegistrationCode(inputUser.RegistrationCode);
 
             if (user == null)
             {
@@ -234,7 +218,7 @@ namespace my_eshop_api.Controllers
             user.RefreshToken = CreateRefreshToken();
             user.RefreshTokenExpiry = DateTime.Now.AddDays(7);
 
-            await Context.SaveChangesAsync();
+            Service.UpdateUser(user);
 
             user.Password = null;
 

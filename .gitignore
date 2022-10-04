@@ -22,4 +22,7 @@ eshop-backend/bin/*
 eshop-backend/obj/*
 eshop-backend/wwwroot/images
 
+eshop-backend-tests/bin/*
+eshop-backend-tests/obj/*
+
 

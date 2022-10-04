@@ -5,7 +5,9 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "eshop-angular", "eshop-angular\eshop-angular.esproj", "{45B78888-07C9-42AB-B2E4-EE8C1C75C412}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eshop-backend", "eshop-backend\eshop-backend.csproj", "{F9337A88-AB49-4D81-8948-F60F16490247}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eshop-backend", "eshop-backend\eshop-backend.csproj", "{F9337A88-AB49-4D81-8948-F60F16490247}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eshop-backend-tests", "eshop-backend-tests\eshop-backend-tests.csproj", "{9C281E6F-B95E-44D8-874B-229207E07C54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{F9337A88-AB49-4D81-8948-F60F16490247}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9337A88-AB49-4D81-8948-F60F16490247}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9337A88-AB49-4D81-8948-F60F16490247}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C281E6F-B95E-44D8-874B-229207E07C54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C281E6F-B95E-44D8-874B-229207E07C54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C281E6F-B95E-44D8-874B-229207E07C54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C281E6F-B95E-44D8-874B-229207E07C54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
